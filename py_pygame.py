@@ -68,9 +68,17 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.move_ip(-self.speed, 0)
         if self.rect.right < 75:
             self.kill()
-            #player.score =+ 1
-            #print(player.score)
+            lives.count-=1
+            print(lives.count)
+            player.score+= 1
 
+class Lives(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Lives, self).__init__()
+        self.count = 3
+        self.surf = pygame.Surface((50, SCREEN_HEIGHT))
+        self.surf.fill((255, 255, 255))
+        self.rect = self.surf.get_rect()
 pygame.init()
 pygame.font.init()
 font = pygame.font.Font('Fonts/Pixelfy.ttf', 32)
@@ -84,12 +92,11 @@ pygame.time.set_timer(ADDENEMY, 750)
 
 player = Player()
 enemy = Enemy()
-
+lives = Lives()
 enemies = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 
-score = 0
 running = True
 gameframe = 0
 fpsclock = pygame.time.Clock()
@@ -113,13 +120,10 @@ while running:
             new_enemy = Enemy()
             enemies.add(new_enemy)
             all_sprites.add(new_enemy)
-            if new_enemy.rect.right < 75:
-                player.score += 1
-
 
     pressed_keys = pygame.key.get_pressed()
     player.update(pressed_keys)
-    text = font.render(f'Score: ', True, [255, 0, 0])
+    text = font.render(f'Score: {player.score}', True, [255, 0, 0])
     enemies.update()
 
     screen.fill((0, 0, 0))
@@ -127,10 +131,8 @@ while running:
     screen.blit(text, (65, 5))
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
-    print(player.score)
     if pygame.sprite.spritecollideany(player, enemies):
         player.kill()
         running = False
-
 
     pygame.display.flip()
