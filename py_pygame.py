@@ -134,5 +134,4 @@ while running:
     if pygame.sprite.spritecollideany(player, enemies):
         player.kill()
         running = False
-
     pygame.display.flip()

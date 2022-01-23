@@ -78,17 +78,20 @@ class Lives(pygame.sprite.Sprite):
     def __init__(self):
         super(Lives, self).__init__()
         self.count = 3
-        self.surf = pygame.Surface((50, SCREEN_HEIGHT))
-        self.surf.fill((255, 255, 255))
-        self.rect = self.surf.get_rect()
+        self.surf = pygame.image.load("GameObj/3h-50.png")
+        self.rect = self.surf.get_rect(
+            center=(SCREEN_WIDTH -75, 25)
+        )
         self.text = font.render(f'{self.count}', True, [0, 0, 0])
     def update(self):
+        if self.count == 3:
+            self.surf = pygame.image.load("GameObj/3h-50.png").convert()
         if self.count == 2:
-            self.surf.fill((255, 255, 0))
             self.text = font.render(f'{self.count}', True, [0, 0, 0])
+            self.surf = pygame.image.load("GameObj/2h-50.png").convert()
         if self.count == 1:
-            self.surf.fill((255, 0, 0))
             self.text = font.render(f'{self.count}', True, [0, 0, 0])
+            self.surf = pygame.image.load("GameObj/1h-50.png").convert()
         if self.count == 0:
             player.kill()
 pygame.init()
